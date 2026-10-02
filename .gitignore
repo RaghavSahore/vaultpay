@@ -41,3 +41,12 @@ yarn-error.*
 /android
 .env
 credentials.json
+
+# build artifacts
+*.apk
+*.aab
+*.ab
+*.ipa
+
+# local-only security testing output
+exploit-screenshots/

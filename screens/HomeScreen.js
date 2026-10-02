@@ -2,6 +2,11 @@ import React, { useEffect,useState } from "react";
 import { View, Text, StyleSheet,Button } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL } from "../config";
+import { MMKV } from 'react-native-mmkv';
+
+// 🐛 BUG 4 — MMKV instance without encryption key
+// Dev assumes "MMKV is secure by default" — it is NOT
+const storage = new MMKV();
 export default function HomeScreen({ navigation }) {
   const [userData, setUserData] = useState(null);
 async function set_itemInAsyncStore() {
@@ -41,6 +46,21 @@ useEffect(() => {
     console.log('the BASE_URL:', BASE_URL);
   })();
 }, []);
+
+ useEffect(() => {
+    (async () => {
+      await set_itemInAsyncStore();
+      await get_itemFromAsyncStore();
+      console.log('the BASE_URL:', BASE_URL);
+      
+      // 🐛 BUG 4 continued — plaintext PII + credentials in MMKV
+      storage.set('user.aadhaar', '1234-5678-9012');
+      storage.set('user.pan', 'ABCDE1234F');
+      storage.set('user.upi.pin', '4821');
+      storage.set('user.secondaryToken', 'refresh_tkn_eyJhbGc...');
+    })();
+  }, []);
+
 
 return (<View style={styles.container}>
   <View style={styles.container}>
