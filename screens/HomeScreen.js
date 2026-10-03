@@ -44,23 +44,13 @@ useEffect(() => {
     await set_itemInAsyncStore();
     await get_itemFromAsyncStore();
     console.log('the BASE_URL:', BASE_URL);
-  })();
-}, []);
-
- useEffect(() => {
-    (async () => {
-      await set_itemInAsyncStore();
-      await get_itemFromAsyncStore();
-      console.log('the BASE_URL:', BASE_URL);
-      
-      // 🐛 BUG 4 continued — plaintext PII + credentials in MMKV
+     // 🐛 BUG 4 continued — plaintext PII + credentials in MMKV
       storage.set('user.aadhaar', '1234-5678-9012');
       storage.set('user.pan', 'ABCDE1234F');
       storage.set('user.upi.pin', '4821');
       storage.set('user.secondaryToken', 'refresh_tkn_eyJhbGc...');
-    })();
-  }, []);
-
+  })();
+}, []);
 
 return (<View style={styles.container}>
   <View style={styles.container}>
